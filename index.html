@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ebe Betül Uzunali - Doğuma, Emzirmeye ve Annelik Yolculuğuna</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" onclick="toggleMobileMenu()" style="display: none;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <ul class="nav-menu">
+                    <li><a href="#anasayfa">Ana Sayfa</a></li>
+                    <li><a href="#anasayfa">Hakkımda</a></li>
+                    <li><a href="#konular">Konular</a></li>
+                    <li><a href="#urunler">Ürünler</a></li>
+                    <li><a href="#iletisim">İletişim</a></li>
+                </ul>
+                <div class="header-cart">
+                    <button class="cart-icon-btn" id="cartToggle" onclick="toggleCart()">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-8 2a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="cart-badge" id="cartBadge" style="display: none;">0</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="anasayfa" class="hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">Doğuma, Emzirmeye ve Annelik Yolculuğuna</h1>
+                    <h2 class="hero-subtitle">Bilgiyle, Güvenle ve Doğal Olanla Hazırlan</h2>
+                    <div class="hero-description">
+                        <p>
+                            Gebelik, doğum, emzirme ve yenidoğan dönemi… Bu süreçlerde çoğu zaman korkular, kulaktan dolma bilgiler ve "şunu yapmalısın" cümleleriyle karşılaşıyoruz.
+                        </p>
+                        <p class="highlight-text">
+                            Burada ise gerçekleri, bilimsel bilgiyle, deneyimle ve anneliğin içinden konuşuyoruz.
+                        </p>
+                        <p>
+                            Doğal gebelik, doğal doğum, emzirme ve yenidoğan sürecinde kadınların bedenlerine güvenmelerini destekliyoruz.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="intro">
+            <div class="container">
+                <div class="intro-content">
+                    <h2 class="section-title">Bu Alanda Neler Konuşuyoruz?</h2>
+                </div>
+            </div>
+        </section>
+
+        <section id="konular" class="topics">
+            <div class="container">
+                <div class="topics-grid">
+                    <div class="topic-card">
+                        <div class="topic-icon">🌿</div>
+                        <h3 class="topic-title">Gebelik</h3>
+                        <ul class="topic-list">
+                            <li>Gebelikte beden gerçekten nasıl değişir?</li>
+                            <li>Normal kabul edilen durumlar neler?</li>
+                            <li>Gebelikle ilgili doğru bilinen yanlışlar</li>
+                            <li>Gereksiz korkular nereden geliyor?</li>
+                        </ul>
+                    </div>
+
+                    <div class="topic-card">
+                        <div class="topic-icon">🌿</div>
+                        <h3 class="topic-title">Doğum</h3>
+                        <ul class="topic-list">
+                            <li>Doğal doğum nedir, ne değildir?</li>
+                            <li>Suda doğum kimler için uygundur?</li>
+                            <li>Doğumun fizyolojisi</li>
+                            <li>Doğum gerçekten bu kadar zor mu?</li>
+                        </ul>
+                    </div>
+
+                    <div class="topic-card">
+                        <div class="topic-icon">🌿</div>
+                        <h3 class="topic-title">Emzirme</h3>
+                        <ul class="topic-list">
+                            <li>Emzirmenin temelleri</li>
+                            <li>İlk temas ve ilk emzirmenin önemi</li>
+                            <li>Anne ve bebek uyumu</li>
+                            <li>Emzirme sürecinde sık karşılaşılan durumlar</li>
+                        </ul>
+                    </div>
+
+                    <div class="topic-card">
+                        <div class="topic-icon">🌿</div>
+                        <h3 class="topic-title">Yenidoğan</h3>
+                        <ul class="topic-list">
+                            <li>Yenidoğanın dünyaya uyumu</li>
+                            <li>İlk günler ve ilk haftalarda normal olanlar</li>
+                            <li>Bebek davranışlarını anlamak</li>
+                            <li>Anne–bebek bağlanması</li>
+                        </ul>
+                    </div>
+
+                    <div class="topic-card">
+                        <div class="topic-icon">🌿</div>
+                        <h3 class="topic-title">Lohusalık</h3>
+                        <ul class="topic-list">
+                            <li>Lohusalık dönemi nedir, neleri kapsar?</li>
+                            <li>Fiziksel ve duygusal değişimler</li>
+                            <li>Lohusalıkta annenin ihtiyaçları</li>
+                            <li>Destek ve bakım süreçleri</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="urunler" class="products-section">
+            <div class="container">
+                <h2 class="section-title">Ürünlerimiz</h2>
+                <div class="products-grid" id="productsGrid">
+                    <div class="products-loading">
+                        <div class="loading-spinner"></div>
+                        <p>Ürünler yükleniyor...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="iletisim" class="contact-section-page">
+            <div class="container">
+                <h2 class="section-title">İletişim</h2>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h3>Betül Uzunali / annemhikayem</h3>
+                        <p>Gebelik, doğum, emzirme ve annelik yolculuğunuzda sorularınız için bizimle iletişime geçebilirsiniz.</p>
+                        <div class="contact-methods">
+                            <a href="mailto:annem.hikayem@gmail.com" class="contact-method">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="currentColor"/>
+                                </svg>
+                                <span>annem.hikayem@gmail.com</span>
+                            </a>
+                            <a href="tel:+905356665195" class="contact-method">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" fill="currentColor"/>
+                                </svg>
+                                <span>535 666 51 95</span>
+                            </a>
+                            <div class="contact-method" style="cursor: default;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" fill="currentColor"/>
+                                </svg>
+                                <span>Vergi Dairesi: Alemdar / Vergi No: 0400674863</span>
+                            </div>
+                            <div class="contact-method" style="cursor: default;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
+                                </svg>
+                                <span>Acısu mah. Umuttepe cad. No:8/1 Kartepe Kocaeli</span>
+                            </div>
+                            <a href="https://instagram.com/annemhikayem" target="_blank" class="contact-method">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="currentColor"/>
+                                </svg>
+                                <span>@annemhikayem</span>
+                            </a>
+                            <a href="https://wa.me/905356665195" target="_blank" class="contact-method">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="currentColor"/>
+                                </svg>
+                                <span>WhatsApp</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <!-- Mobil Menü -->
+                <div class="mobile-menu" id="mobileMenu">
+                    <ul>
+                        <li><a href="#anasayfa" onclick="closeMobileMenu()">Ana Sayfa</a></li>
+                        <li><a href="#anasayfa" onclick="closeMobileMenu()">Hakkımda</a></li>
+                        <li><a href="#konular" onclick="closeMobileMenu()">Konular</a></li>
+                        <li><a href="#urunler" onclick="closeMobileMenu()">Ürünler</a></li>
+                        <li><a href="#iletisim" onclick="closeMobileMenu()">İletişim</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-info">
+                    <div class="footer-links">
+                        <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
+                        <span>|</span>
+                        <a href="kullanim-kosullari.html">Kullanım Koşulları</a>
+                        <span>|</span>
+                        <a href="iade-iptal-politikasi.html">İade ve İptal</a>
+                    </div>
+                    <div class="footer-payment-wrapper">
+                        <div class="footer-payment-text">
+                            <span class="payment-icon">💳</span>
+                            <span>Güvenli ödeme: iyzico altyapısı ile Visa, Mastercard, Troy destekli.</span>
+                        </div>
+                        <div class="footer-payment-logos">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" style="height:20px; width:auto;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" style="height:20px; width:auto;">
+                            <img src="iyzico%20logo.png" alt="iyzico" style="height:20px; width:auto; object-fit: contain;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Sepet Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-overlay" onclick="toggleCart()"></div>
+        <div class="cart-panel">
+            <div class="cart-header">
+                <h2>Sepetim</h2>
+                <button class="cart-close" onclick="toggleCart()">×</button>
+            </div>
+            <div class="cart-content" id="cartContent">
+                <div class="cart-empty">
+                    <div class="cart-empty-icon">🛒</div>
+                    <p>Sepetiniz boş</p>
+                </div>
+            </div>
+            <div class="cart-footer" id="cartFooter" style="display: none;">
+                <div class="cart-total">
+                    <span>Toplam:</span>
+                    <span class="cart-total-price" id="cartTotal">0 ₺</span>
+                </div>
+                <button class="cart-checkout-btn" onclick="checkout()">Ödemeye Geç</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kargo Bilgileri Modal -->
+    <div class="shipping-modal" id="shippingModal">
+        <div class="shipping-overlay" onclick="closeShippingModal()"></div>
+        <div class="shipping-panel">
+            <div class="shipping-header">
+                <h2 id="shippingModalTitle">Kargo Bilgileri</h2>
+                <button class="shipping-close" onclick="closeShippingModal()">×</button>
+            </div>
+            <div class="shipping-content">
+                <form id="shippingForm" class="shipping-form">
+                    <div class="form-group">
+                        <label for="firstName">Ad *</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Soyad *</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Telefon Numarası *</label>
+                        <input type="tel" id="phone" name="phone" placeholder="05XX XXX XX XX" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-posta</label>
+                        <input type="email" id="email" name="email" placeholder="ornek@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">İl *</label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="district">İlçe *</label>
+                        <input type="text" id="district" name="district" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Adres (Sokak, Mahalle, Bina No) *</label>
+                        <textarea id="address" name="address" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="postalCode">Posta Kodu</label>
+                        <input type="text" id="postalCode" name="postalCode" placeholder="34000">
+                    </div>
+                    
+                    <!-- Mesafeli Satış Sözleşmesi ve KVKK Checkbox'ları -->
+                    <div class="form-group">
+                        <label class="checkbox-label" style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="mesafeliSatis" name="mesafeliSatis" required style="margin-top: 3px; width: 20px; height: 20px; cursor: pointer;">
+                            <span>
+                                <a href="kullanim-kosullari.html" target="_blank" style="color: var(--deep-purple); text-decoration: underline;">Mesafeli Satış Sözleşmesi</a>'ni okudum, onaylıyorum. <span style="color: red;">*</span>
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label" style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="kvkk" name="kvkk" required style="margin-top: 3px; width: 20px; height: 20px; cursor: pointer;">
+                            <span>
+                                <a href="gizlilik-politikasi.html" target="_blank" style="color: var(--deep-purple); text-decoration: underline;">KVKK Aydınlatma Metni</a>'ni okudum, onaylıyorum. <span style="color: red;">*</span>
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="shipping-cancel-btn" onclick="closeShippingModal()">İptal</button>
+                        <button type="submit" class="shipping-submit-btn">Ödemeye Geç</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Gallery Lightbox -->
+    <div class="photo-lightbox" id="photoLightbox">
+        <div class="lightbox-overlay" id="lightboxOverlay"></div>
+        <div class="lightbox-container">
+            <button class="lightbox-close" id="lightboxClose">×</button>
+            <button class="lightbox-nav lightbox-prev" id="lightboxPrev">‹</button>
+            <button class="lightbox-nav lightbox-next" id="lightboxNext">›</button>
+            <div class="lightbox-content">
+                <img id="lightboxImage" src="" alt="Ürün Fotoğrafı">
+            </div>
+            <div class="lightbox-counter">
+                <span id="lightboxCurrent">1</span> / <span id="lightboxTotal">1</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Abonelik Floating Button & Panel -->
+    <div class="abonelik-widget">
+        <button class="abonelik-toggle" id="abonelikToggle">
+            <span>📧</span>
+            <span class="abonelik-toggle-text">ABONELİK</span>
+        </button>
+        <div class="abonelik-panel" id="abonelikPanel">
+            <div class="abonelik-panel-header">
+                <h3 class="abonelik-panel-title">ABONELİK</h3>
+                <button class="abonelik-close" id="abonelikClose">×</button>
+            </div>
+            <div class="abonelik-panel-content">
+                <p class="abonelik-warning">
+                    Dikkat: Kayıt olarak, doğum hakkındaki onlarca yıllık yanlış inançları yıkmayı kabul ediyorsun... Hazır mısın?
+                </p>
+                <form class="abonelik-form">
+                    <input type="text" class="abonelik-input" placeholder="Ad*" required>
+                    <input type="email" class="abonelik-input" placeholder="E-posta*" required>
+                    <button type="submit" class="abonelik-button">Hiç Korkmuyorum!</button>
+                </form>
+                <p class="abonelik-footer">
+                    * Her hafta e-posta kutuna 2 küçük tohum: İstediğin zaman sula!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+    
+    <!-- Main Script -->
+    <script src="script.js"></script>
+</body>
+</html>
+

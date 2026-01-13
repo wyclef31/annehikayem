@@ -1,0 +1,49 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "**/FIREBASE_SETUP.md",
+      "**/DEPLOY.md",
+      "**/PAYMENT_SETUP.md",
+      "**/README_PAYMENT.md",
+      "**/ODEME_ONAY_GEREKSINIMLERI.md",
+      "**/.git/**",
+      "**/.gitignore",
+      "server.js",
+      "package.json",
+      "package-lock.json",
+      ".env",
+      ".env.example"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(jpg|jpeg|gif|png|svg|webp|ico)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(js|css)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=3600"
+          }
+        ]
+      }
+    ]
+  }
+}
+

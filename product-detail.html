@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürün Detayı - Ebe Betül Uzunali</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .product-detail-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 20px 80px;
+        }
+
+        .product-detail-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-top: 40px;
+        }
+
+        .product-detail-images {
+            position: sticky;
+            top: 100px;
+        }
+
+        .product-main-image {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(107, 76, 147, 0.15);
+        }
+
+        .product-main-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .product-thumbnails {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 15px;
+        }
+
+        .product-thumbnail {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .product-thumbnail:hover {
+            border-color: var(--medium-purple);
+            transform: scale(1.05);
+        }
+
+        .product-thumbnail.active {
+            border-color: var(--deep-purple);
+        }
+
+        .product-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-detail-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-detail-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--deep-purple);
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .product-detail-description {
+            color: var(--dark-gray);
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .product-detail-price-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: var(--very-light-purple);
+            border-radius: 12px;
+        }
+
+        .product-detail-price-container {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .product-detail-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--deep-purple);
+        }
+
+        .product-kdv-text {
+            font-size: 0.85rem;
+            color: var(--medium-purple);
+            font-style: italic;
+        }
+
+        .product-detail-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .product-detail-button {
+            flex: 1;
+            padding: 18px 30px;
+            background: linear-gradient(135deg, var(--deep-purple) 0%, var(--medium-purple) 100%);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .product-detail-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(107, 76, 147, 0.4);
+        }
+
+        .product-detail-button.secondary {
+            background: var(--very-light-purple);
+            color: var(--deep-purple);
+        }
+
+        .product-detail-button.secondary:hover {
+            background: var(--light-purple);
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--deep-purple);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--medium-purple);
+            transform: translateX(-5px);
+        }
+
+        .product-loading {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .product-error {
+            text-align: center;
+            padding: 100px 20px;
+            color: var(--dark-gray);
+        }
+
+        @media (max-width: 968px) {
+            .product-detail-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .product-detail-images {
+                position: static;
+            }
+
+            .product-detail-title {
+                font-size: 2rem;
+            }
+
+            .product-detail-price {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-detail-container {
+                padding: 100px 15px 40px;
+            }
+            
+            .product-detail-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                margin-top: 20px;
+            }
+            
+            .product-detail-images {
+                position: static;
+            }
+            
+            .product-detail-title {
+                font-size: 1.8rem;
+            }
+            
+            .product-detail-price {
+                font-size: 1.5rem;
+            }
+            
+            .product-thumbnails {
+                grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+                gap: 10px;
+            }
+
+            .product-detail-actions {
+                flex-direction: column;
+            }
+
+            .product-detail-button {
+                width: 100%;
+            }
+            
+            .back-button {
+                font-size: 0.9rem;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <ul class="nav-menu">
+                    <li><a href="index.html#anasayfa">Ana Sayfa</a></li>
+                    <li><a href="index.html#anasayfa">Hakkımda</a></li>
+                    <li><a href="index.html#konular">Konular</a></li>
+                    <li><a href="index.html#urunler">Ürünler</a></li>
+                    <li><a href="index.html#iletisim">İletişim</a></li>
+                </ul>
+                <div class="header-cart">
+                    <button class="cart-icon-btn" id="cartToggle" onclick="toggleCart()">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-8 2a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="cart-badge" id="cartBadge" style="display: none;">0</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="product-detail-container">
+            <a href="index.html#urunler" class="back-button">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Ürünlere Dön
+            </a>
+
+            <div id="productDetailContent">
+                <div class="product-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Ürün yükleniyor...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-links">
+                        <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
+                        <span>|</span>
+                        <a href="kullanim-kosullari.html">Kullanım Koşulları</a>
+                        <span>|</span>
+                        <a href="iade-iptal-politikasi.html">İade ve İptal</a>
+                    </div>
+                    <div class="footer-payment-wrapper">
+                        <div class="footer-payment-text">
+                            <span class="payment-icon">💳</span>
+                            <span>Güvenli ödeme: iyzico altyapısı ile Visa, Mastercard, Troy destekli.</span>
+                        </div>
+                        <div class="footer-payment-logos">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" style="height:20px; width:auto;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" style="height:20px; width:auto;">
+                            <img src="iyzico%20logo.png" alt="iyzico" style="height:20px; width:auto; object-fit: contain;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Sepet Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-overlay" onclick="toggleCart()"></div>
+        <div class="cart-panel">
+            <div class="cart-header">
+                <h2>Sepetim</h2>
+                <button class="cart-close" onclick="toggleCart()">×</button>
+            </div>
+            <div class="cart-content" id="cartContent">
+                <div class="cart-empty">
+                    <div class="cart-empty-icon">🛒</div>
+                    <p>Sepetiniz boş</p>
+                </div>
+            </div>
+            <div class="cart-footer" id="cartFooter" style="display: none;">
+                <div class="cart-total">
+                    <span>Toplam:</span>
+                    <span class="cart-total-price" id="cartTotal">0 ₺</span>
+                </div>
+                <button class="cart-checkout-btn" onclick="checkout()">Ödemeye Geç</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+    
+    <!-- Product Detail Script -->
+    <script>
+        // Sepet fonksiyonları (script.js'den kopyalandı)
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartBadge();
+            renderCart();
+        }
+
+        function updateCartBadge() {
+            const badge = document.getElementById('cartBadge');
+            if (badge) {
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                badge.textContent = totalItems;
+                badge.style.display = totalItems > 0 ? 'flex' : 'none';
+            }
+        }
+
+        function addToCart(productId, productName, productPrice, productImage) {
+            const name = productName.replace(/&#039;/g, "'").replace(/&quot;/g, '"');
+            const price = productPrice.replace(/&#039;/g, "'").replace(/&quot;/g, '"');
+            const image = productImage.replace(/&#039;/g, "'").replace(/&quot;/g, '"');
+            
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: name,
+                    price: price,
+                    image: image,
+                    quantity: 1
+                });
+            }
+            
+            saveCart();
+            
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = '✓ Eklendi!';
+            button.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = '';
+            }, 1500);
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            saveCart();
+        }
+
+        function renderCart() {
+            const cartContent = document.getElementById('cartContent');
+            const cartFooter = document.getElementById('cartFooter');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            if (!cartContent) return;
+            
+            if (cart.length === 0) {
+                cartContent.innerHTML = `
+                    <div class="cart-empty">
+                        <div class="cart-empty-icon">🛒</div>
+                        <p>Sepetiniz boş</p>
+                    </div>
+                `;
+                if (cartFooter) cartFooter.style.display = 'none';
+                return;
+            }
+            
+            let total = 0;
+            let html = '';
+            
+            cart.forEach(item => {
+                const priceNum = parseFloat(item.price.replace(/[^\d.,]/g, '').replace(',', '.')) || 0;
+                const itemTotal = priceNum * item.quantity;
+                total += itemTotal;
+                
+                html += `
+                    <div class="cart-item">
+                        ${item.image ? `<img src="${item.image}" alt="${escapeHtml(item.name)}" class="cart-item-image">` : '<div class="cart-item-image" style="background: var(--very-light-purple); display: flex; align-items: center; justify-content: center; color: var(--medium-purple);">📦</div>'}
+                        <div class="cart-item-info">
+                            <div class="cart-item-title">${escapeHtml(item.name)}</div>
+                            <div class="cart-item-price">${escapeHtml(item.price)} ₺ x ${item.quantity}</div>
+                            <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">Kaldır</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            cartContent.innerHTML = html;
+            
+            if (cartFooter) {
+                cartFooter.style.display = 'block';
+                if (cartTotal) {
+                    cartTotal.textContent = total.toFixed(2) + ' ₺';
+                }
+            }
+        }
+
+        function toggleCart() {
+            const cartModal = document.getElementById('cartModal');
+            if (cartModal) {
+                cartModal.classList.toggle('active');
+                if (cartModal.classList.contains('active')) {
+                    renderCart();
+                }
+            }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return String(text).replace(/[&<>"']/g, m => map[m]);
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Sepetiniz boş!');
+                return;
+            }
+            window.location.href = 'index.html#urunler';
+        }
+
+        window.addToCart = addToCart;
+        window.removeFromCart = removeFromCart;
+        window.toggleCart = toggleCart;
+        window.checkout = checkout;
+
+        // Ürün detayını yükle
+        async function loadProductDetail() {
+            const content = document.getElementById('productDetailContent');
+            
+            // URL'den ürün ID'sini al
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            
+            if (!productId) {
+                content.innerHTML = `
+                    <div class="product-error">
+                        <div style="font-size: 4rem; margin-bottom: 20px;">❌</div>
+                        <p>Ürün bulunamadı</p>
+                        <a href="index.html#urunler" class="product-detail-button" style="margin-top: 20px; display: inline-block;">Ürünlere Dön</a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Firebase kontrolü
+            if (typeof firebase === 'undefined' || typeof db === 'undefined' || !db) {
+                content.innerHTML = `
+                    <div class="product-error">
+                        <div style="font-size: 4rem; margin-bottom: 20px;">❌</div>
+                        <p>Firebase bağlantısı kurulamadı. Lütfen sayfayı yenileyin.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const doc = await db.collection('urunler').doc(productId).get();
+                
+                if (!doc.exists) {
+                    content.innerHTML = `
+                        <div class="product-error">
+                            <div style="font-size: 4rem; margin-bottom: 20px;">❌</div>
+                            <p>Ürün bulunamadı</p>
+                            <a href="index.html#urunler" class="product-detail-button" style="margin-top: 20px; display: inline-block;">Ürünlere Dön</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const product = { id: doc.id, ...doc.data() };
+                
+                // Kapak fotoğrafı ve galeri
+                const kapakFoto = product.kapak || product.resim || '';
+                const galeriFoto = product.galeri || [];
+                const tumFotograflar = [];
+                if (kapakFoto) tumFotograflar.push(kapakFoto);
+                if (Array.isArray(galeriFoto)) {
+                    galeriFoto.forEach(foto => {
+                        if (foto && !tumFotograflar.includes(foto)) {
+                            tumFotograflar.push(foto);
+                        }
+                    });
+                }
+
+                // Thumbnail HTML
+                let thumbnailsHtml = '';
+                if (tumFotograflar.length > 1) {
+                    thumbnailsHtml = `
+                        <div class="product-thumbnails">
+                            ${tumFotograflar.map((foto, idx) => `
+                                <div class="product-thumbnail ${idx === 0 ? 'active' : ''}" data-index="${idx}" onclick="changeMainImage(${idx})">
+                                    <img src="${foto}" alt="Ürün ${idx + 1}">
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+
+                content.innerHTML = `
+                    <div class="product-detail-content">
+                        <div class="product-detail-images">
+                            <div class="product-main-image">
+                                <img id="mainProductImage" src="${tumFotograflar[0] || ''}" alt="${escapeHtml(product.baslik || 'Ürün')}">
+                            </div>
+                            ${thumbnailsHtml}
+                        </div>
+                        <div class="product-detail-info">
+                            <h1 class="product-detail-title">${escapeHtml(product.baslik || 'Ürün')}</h1>
+                            <div class="product-detail-description">${escapeHtml(product.aciklama || '')}</div>
+                            <div class="product-detail-price-section">
+                                ${product.fiyat ? `
+                                    <div class="product-detail-price-container">
+                                        <div class="product-detail-price">${escapeHtml(product.fiyat)} ₺</div>
+                                        <div class="product-kdv-text">KDV dahildir</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            ${product.aktif !== false ? `
+                                <div class="product-detail-actions">
+                                    <button class="product-detail-button" onclick="addToCart('${product.id}', '${escapeHtml(product.baslik || 'Ürün')}', '${escapeHtml(product.fiyat || '0')}', '${escapeHtml(product.kapak || '')}')">Sepete Ekle</button>
+                                    <a href="index.html#urunler" class="product-detail-button secondary">Ürünlere Dön</a>
+                                </div>
+                            ` : `
+                                <div class="product-detail-actions">
+                                    <a href="admin.html#admin" class="product-detail-button">Düzenle</a>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                `;
+
+                // Fotoğraf değiştirme fonksiyonu
+                if (tumFotograflar.length > 0) {
+                    window.changeMainImage = function(index) {
+                        const mainImage = document.getElementById('mainProductImage');
+                        if (mainImage && tumFotograflar[index]) {
+                            mainImage.src = tumFotograflar[index];
+                            
+                            // Thumbnail aktif durumunu güncelle
+                            document.querySelectorAll('.product-thumbnail').forEach((thumb, idx) => {
+                                if (idx === index) {
+                                    thumb.classList.add('active');
+                                } else {
+                                    thumb.classList.remove('active');
+                                }
+                            });
+                        }
+                    };
+                }
+
+            } catch (error) {
+                console.error('Ürün yükleme hatası:', error);
+                content.innerHTML = `
+                    <div class="product-error">
+                        <div style="font-size: 4rem; margin-bottom: 20px;">❌</div>
+                        <p>Ürün yüklenirken bir hata oluştu</p>
+                        <p style="font-size: 0.9rem; color: #999; margin-top: 10px;">${error.message || 'Bilinmeyen hata'}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartBadge();
+            
+            // Firebase hazır olana kadar bekle
+            setTimeout(() => {
+                loadProductDetail();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
+

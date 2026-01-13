@@ -1,0 +1,39 @@
+# Firebase
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+.firebaserc
+
+# Node modules
+node_modules/
+package-lock.json
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backend logs
+*.log
+
+# AppData ve diğer sistem klasörleri
+AppData/
+Local/
+*.exe
+*.dll
+
+# CapCut ve diğer programlar
+CapCut/
+Program Files/
+Program Files (x86)/

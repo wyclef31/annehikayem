@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Paneli - Abonelik Yönetimi</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--very-light-purple) 0%, var(--white) 100%);
+            padding: 100px 20px 40px;
+        }
+
+        .admin-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, var(--deep-purple) 0%, var(--medium-purple) 100%);
+            padding: 30px;
+            border-radius: 12px;
+            color: var(--white);
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(107, 76, 147, 0.2);
+        }
+
+        .admin-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .admin-header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(107, 76, 147, 0.1);
+            text-align: center;
+            border-top: 3px solid var(--medium-purple);
+        }
+
+        .stat-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--deep-purple);
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .stat-card p {
+            color: var(--dark-gray);
+            font-size: 0.95rem;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .admin-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--deep-purple) 0%, var(--medium-purple) 100%);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(107, 76, 147, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--very-light-purple);
+            color: var(--deep-purple);
+            border: 2px solid var(--medium-purple);
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .abonelik-table-container {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(107, 76, 147, 0.1);
+            overflow: hidden;
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, var(--deep-purple) 0%, var(--medium-purple) 100%);
+            padding: 20px 30px;
+            color: var(--white);
+        }
+
+        .table-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .abonelik-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .abonelik-table thead {
+            background: var(--very-light-purple);
+        }
+
+        .abonelik-table th {
+            padding: 15px 20px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--deep-purple);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .abonelik-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--very-light-purple);
+            color: var(--dark-gray);
+        }
+
+        .abonelik-table tbody tr:hover {
+            background: var(--very-light-purple);
+        }
+
+        .abonelik-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--dark-gray);
+        }
+
+        .no-data p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .no-data-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--deep-purple) 0%, var(--medium-purple) 100%);
+            padding: 20px;
+        }
+
+        .login-box {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-box h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--deep-purple);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .login-box p {
+            text-align: center;
+            color: var(--dark-gray);
+            margin-bottom: 30px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid var(--very-light-purple);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: var(--medium-purple);
+            box-shadow: 0 0 0 3px rgba(107, 76, 147, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--deep-purple) 0%, var(--medium-purple) 100%);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(107, 76, 147, 0.3);
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-align: center;
+            border: 1px solid #fcc;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--deep-purple);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--medium-purple);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: var(--white);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        /* Ürün Ekleme Formu */
+        .urun-ekle-container {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(107, 76, 147, 0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .urun-ekle-header {
+            background: linear-gradient(135deg, var(--deep-purple) 0%, var(--medium-purple) 100%);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--white);
+        }
+
+        .urun-ekle-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .urun-ekle-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: var(--white);
+            font-size: 2rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            line-height: 1;
+        }
+
+        .urun-ekle-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .urun-ekle-form {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--deep-purple);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--very-light-purple);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--medium-purple);
+            box-shadow: 0 0 0 3px rgba(107, 76, 147, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-help {
+            display: block;
+            font-size: 0.85rem;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .form-file-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px dashed var(--very-light-purple);
+            border-radius: 8px;
+            background: var(--off-white);
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-file-input:hover {
+            border-color: var(--medium-purple);
+            background: var(--white);
+        }
+
+        .form-file-input:focus {
+            outline: none;
+            border-color: var(--medium-purple);
+            box-shadow: 0 0 0 3px rgba(107, 76, 147, 0.1);
+        }
+
+        .foto-preview {
+            position: relative;
+            margin-top: 15px;
+            display: inline-block;
+        }
+
+        .foto-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .foto-preview-remove {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #dc3545;
+            color: var(--white);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            line-height: 1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .foto-preview-remove:hover {
+            background: #c82333;
+            transform: scale(1.1);
+        }
+
+        .galeri-preview-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .galeri-preview-item {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+
+        .galeri-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .galeri-preview-remove {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc3545;
+            color: var(--white);
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            line-height: 1;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .galeri-preview-remove:hover {
+            background: #c82333;
+            transform: scale(1.1);
+        }
+
+        .upload-progress {
+            margin-top: 10px;
+            padding: 10px;
+            background: var(--very-light-purple);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: var(--deep-purple);
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: normal;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .galeri-fotograflar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .galeri-foto-item {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .galeri-foto-item:first-child .galeri-foto-remove {
+            display: none !important;
+        }
+
+        .galeri-foto-input {
+            flex: 1;
+        }
+
+        .galeri-foto-remove {
+            background: #dc3545;
+            color: var(--white);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            line-height: 1;
+        }
+
+        .galeri-foto-remove:hover {
+            background: #c82333;
+            transform: scale(1.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--very-light-purple);
+        }
+
+        @media (max-width: 768px) {
+            .admin-header h1 {
+                font-size: 2rem;
+            }
+
+            .abonelik-table {
+                font-size: 0.85rem;
+            }
+
+            .abonelik-table th,
+            .abonelik-table td {
+                padding: 10px 12px;
+            }
+
+            .admin-actions {
+                flex-direction: column;
+            }
+
+            .admin-btn {
+                width: 100%;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .urunler-listesi {
+                grid-template-columns: 1fr;
+            }
+
+            .urun-kart-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .admin-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <h1>Admin Paneli</h1>
+            <p>Giriş yapmak için admin şifresini girin</p>
+            <form class="login-form" id="loginForm">
+                <input type="password" class="login-input" id="adminPassword" placeholder="Şifre" required>
+                <div id="loginError" class="error-message" style="display: none;"></div>
+                <button type="submit" class="login-btn">Giriş Yap</button>
+            </form>
+            <a href="index.html" class="back-link">← Ana Sayfaya Dön</a>
+        </div>
+    </div>
+
+    <div id="adminScreen" class="admin-container" style="display: none;">
+        <div class="admin-content">
+            <div class="admin-header">
+                <h1>Admin Paneli</h1>
+                <p>Abonelik Yönetimi</p>
+            </div>
+
+            <div class="admin-stats" id="adminStats">
+                <div class="stat-card">
+                    <h3 id="totalAbonelik">0</h3>
+                    <p>Toplam Abonelik</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="todayAbonelik">0</h3>
+                    <p>Bugünkü Abonelikler</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="thisWeekAbonelik">0</h3>
+                    <p>Bu Haftaki Abonelikler</p>
+                </div>
+            </div>
+
+            <div class="admin-actions">
+                <button class="admin-btn btn-primary" onclick="refreshData()">Yenile</button>
+                <button class="admin-btn btn-secondary" onclick="exportData()">Dışa Aktar (CSV)</button>
+                <button class="admin-btn btn-success" onclick="toggleUrunEkleForm()" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">Ürün Ekle</button>
+                <button class="admin-btn btn-danger" onclick="clearAllData()">Tümünü Sil</button>
+                <button class="admin-btn btn-secondary" onclick="logout()">Çıkış Yap</button>
+                <a href="index.html" class="admin-btn btn-secondary" style="text-decoration: none; display: inline-block;">Ana Sayfaya Dön</a>
+            </div>
+
+
+            <!-- Ürün Ekleme Formu -->
+            <div class="urun-ekle-container" id="urunEkleContainer" style="display: none;">
+                <div class="urun-ekle-header">
+                    <h2>Yeni Ürün Ekle</h2>
+                    <button class="urun-ekle-close" onclick="toggleUrunEkleForm()">×</button>
+                </div>
+                <form class="urun-ekle-form" id="urunEkleForm">
+                    <div class="form-group">
+                        <label>Ürün Başlığı *</label>
+                        <input type="text" id="urunBaslik" class="form-input" placeholder="Örn: Doğum Hazırlık Eğitimi" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ürün Açıklaması *</label>
+                        <textarea id="urunAciklama" class="form-textarea" rows="4" placeholder="Ürün hakkında detaylı açıklama yazın..." required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Fiyat (₺) *</label>
+                            <input type="text" id="urunFiyat" class="form-input" placeholder="Örn: 299" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Sıra Numarası</label>
+                            <input type="number" id="urunSira" class="form-input" placeholder="1" value="1" min="1">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kapak Fotoğrafı *</label>
+                        <input type="file" id="urunKapakFile" class="form-file-input" accept="image/*" onchange="previewKapakFoto(this)">
+                        <div id="kapakFotoPreview" class="foto-preview" style="display: none;">
+                            <img id="kapakFotoPreviewImg" src="" alt="Kapak fotoğrafı önizleme">
+                            <button type="button" class="foto-preview-remove" onclick="removeKapakFoto()">×</button>
+                        </div>
+                        <small class="form-help">Bilgisayarınızdan veya mobil cihazınızdan fotoğraf seçin</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Galeri Fotoğrafları</label>
+                        <input type="file" id="galeriFotoFile" class="form-file-input" accept="image/*" multiple onchange="addGaleriFotoFile(this)">
+                        <div id="galeriFotograflarPreview" class="galeri-preview-container"></div>
+                        <button type="button" class="admin-btn btn-secondary" onclick="document.getElementById('galeriFotoFile').click()" style="margin-top: 10px; padding: 8px 15px;">+ Fotoğraf Ekle</button>
+                        <small class="form-help">Birden fazla fotoğraf seçebilirsiniz. Tıklayınca galeri olarak gösterilecek.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ürün Linki (Opsiyonel)</label>
+                        <input type="url" id="urunLink" class="form-input" placeholder="https://...">
+                        <small class="form-help">Satın alma veya detay sayfası linki</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="urunAktif" checked>
+                            <span>Ürün aktif (görünür)</span>
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="admin-btn btn-primary">Ürünü Kaydet</button>
+                        <button type="button" class="admin-btn btn-secondary" onclick="toggleUrunEkleForm()">İptal</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Ürünler Bölümü -->
+            <div class="urunler-table-container" style="margin-bottom: 40px;">
+                <div class="table-header">
+                    <h2>Ürünler</h2>
+                    <button class="admin-btn btn-primary" onclick="loadAdminUrunler()">Yenile</button>
+                </div>
+                <div id="urunlerAdminListesi" style="background: var(--white); border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(107, 76, 147, 0.1);">
+                    <div style="text-align: center; padding: 40px; color: var(--dark-gray);">Yükleniyor...</div>
+                </div>
+            </div>
+
+            <!-- Siparişler Bölümü -->
+            <div class="siparisler-table-container" style="margin-bottom: 40px;">
+                <div class="table-header">
+                    <h2>Satılan Ürünler / Siparişler</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="siparisArama" placeholder="Sipariş ara..." style="padding: 8px 15px; border: 1px solid var(--very-light-purple); border-radius: 8px; font-size: 0.9rem;" onkeyup="filterSiparisler()">
+                        <button class="admin-btn btn-primary" onclick="loadSiparisler()">Yenile</button>
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="abonelik-table" id="siparislerTable">
+                        <thead>
+                            <tr>
+                                <th>Sipariş No</th>
+                                <th>Müşteri</th>
+                                <th>Ürünler</th>
+                                <th>Tutar</th>
+                                <th>Tarih</th>
+                                <th>Durum</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="siparislerTableBody">
+                            <tr>
+                                <td colspan="7" class="no-data">
+                                    <div class="no-data-icon">📦</div>
+                                    <p>Henüz sipariş bulunmuyor</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="abonelik-table-container">
+                <div class="table-header">
+                    <h2>Abonelik Listesi</h2>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="abonelik-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Ad</th>
+                                <th>E-posta</th>
+                                <th>Kayıt Tarihi</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="abonelikTableBody">
+                            <tr>
+                                <td colspan="5" class="no-data">
+                                    <div class="no-data-icon">📋</div>
+                                    <p>Henüz abonelik bulunmuyor</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Düzenleme Modal -->
+    <div id="editModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
+        <div style="background: var(--white); border-radius: 12px; padding: 30px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid var(--very-light-purple);">
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--deep-purple); margin: 0;">Ürünü Düzenle</h2>
+                <button onclick="closeEditModal()" style="background: none; border: none; font-size: 2rem; color: var(--dark-gray); cursor: pointer; padding: 0; width: 30px; height: 30px;">×</button>
+            </div>
+            <form id="editUrunForm" class="urun-ekle-form">
+                <div class="form-group">
+                    <label>Ürün Başlığı *</label>
+                    <input type="text" id="editBaslik" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Ürün Açıklaması *</label>
+                    <textarea id="editAciklama" class="form-textarea" rows="4" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Fiyat (₺) *</label>
+                        <input type="text" id="editFiyat" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Sıra Numarası</label>
+                        <input type="number" id="editSira" class="form-input" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Ürün Linki (Opsiyonel)</label>
+                    <input type="url" id="editLink" class="form-input">
+                </div>
+                
+                <!-- Kapak Fotoğrafı -->
+                <div class="form-group">
+                    <label>Kapak Fotoğrafı</label>
+                    <div id="editKapakFotoContainer">
+                        <div id="editKapakFotoPreview" class="foto-preview" style="display: none; margin-bottom: 10px;">
+                            <img id="editKapakFotoPreviewImg" src="" alt="Kapak fotoğrafı">
+                            <button type="button" class="foto-preview-remove" onclick="removeEditKapakFoto()">×</button>
+                        </div>
+                        <input type="file" id="editKapakFile" class="form-file-input" accept="image/*" onchange="previewEditKapakFoto(this)">
+                        <small class="form-help">Yeni kapak fotoğrafı seçmek için dosya seçin</small>
+                    </div>
+                </div>
+                
+                <!-- Galeri Fotoğrafları -->
+                <div class="form-group">
+                    <label>Galeri Fotoğrafları</label>
+                    <div id="editGaleriFotograflarContainer">
+                        <div id="editGaleriFotograflarPreview" class="galeri-preview-container" style="margin-bottom: 10px;"></div>
+                        <input type="file" id="editGaleriFotoFile" class="form-file-input" accept="image/*" multiple onchange="addEditGaleriFotoFile(this)">
+                        <button type="button" class="admin-btn btn-secondary" onclick="document.getElementById('editGaleriFotoFile').click()" style="margin-top: 10px; padding: 8px 15px;">+ Fotoğraf Ekle</button>
+                        <small class="form-help">Yeni galeri fotoğrafları eklemek için dosya seçin</small>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="editAktif" checked>
+                        <span>Ürün aktif (görünür)</span>
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="admin-btn btn-success">Kaydet</button>
+                    <button type="button" class="admin-btn btn-secondary" onclick="closeEditModal()">İptal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+    
+    <!-- Admin Script -->
+    <script src="admin.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ödeme - Annem Hikayem</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .payment-container {
+            min-height: 100vh;
+            padding: 120px 20px 60px;
+            background: var(--off-white);
+        }
+
+        .payment-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+        }
+
+        .payment-main {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(107, 76, 147, 0.1);
+        }
+
+        .payment-sidebar {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(107, 76, 147, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .payment-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--very-light-purple);
+        }
+
+        .payment-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--deep-purple);
+            margin-bottom: 10px;
+        }
+
+        .payment-header p {
+            color: var(--dark-gray);
+            font-size: 0.95rem;
+        }
+
+        .order-summary h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--deep-purple);
+            margin-bottom: 20px;
+        }
+
+        .order-items {
+            margin-bottom: 20px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--very-light-purple);
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-item-name {
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        .order-item-price {
+            color: var(--deep-purple);
+            font-weight: 600;
+        }
+
+        .order-total {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--deep-purple);
+        }
+
+        .order-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .order-total-label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+
+        .order-total-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--deep-purple);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .order-kdv-text {
+            font-size: 0.75rem;
+            color: var(--medium-purple);
+            font-style: italic;
+            text-align: right;
+        }
+
+        .payment-form-section {
+            margin-bottom: 30px;
+        }
+
+        .payment-form-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--deep-purple);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 15px;
+            background: var(--very-light-purple);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 3px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        .checkbox-group a {
+            color: var(--deep-purple);
+            text-decoration: underline;
+        }
+
+        .payment-form-iframe {
+            width: 100%;
+            min-height: 600px;
+            border: 2px solid var(--very-light-purple);
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loading-spinner {
+            border: 4px solid var(--very-light-purple);
+            border-top: 4px solid var(--deep-purple);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-state {
+            background: #fee;
+            border: 2px solid #fcc;
+            border-radius: 8px;
+            padding: 20px;
+            color: #c33;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--deep-purple);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .payment-info-box {
+            background: var(--very-light-purple);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--deep-purple);
+        }
+
+        .payment-info-box p {
+            margin: 0;
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+
+        .payment-button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .payment-button {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px 40px;
+            background: linear-gradient(135deg, var(--deep-purple) 0%, var(--medium-purple) 100%);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 4px 15px rgba(107, 76, 147, 0.3);
+        }
+
+        .payment-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(107, 76, 147, 0.4);
+        }
+
+        .payment-button:active {
+            transform: translateY(0);
+        }
+
+        .payment-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .payment-note {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: var(--medium-purple);
+            font-style: italic;
+        }
+
+        .payment-provider-selection {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .provider-option {
+            position: relative;
+        }
+
+        .provider-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .provider-option label {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            border: 2px solid var(--very-light-purple);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .provider-option input[type="radio"]:checked + label {
+            border-color: var(--deep-purple);
+            background: var(--very-light-purple);
+            box-shadow: 0 4px 15px rgba(107, 76, 147, 0.15);
+        }
+
+        .provider-option label:hover {
+            border-color: var(--medium-purple);
+            background: var(--very-light-purple);
+        }
+
+        .provider-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 80px;
+            height: 50px;
+        }
+
+        .provider-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .provider-info strong {
+            color: var(--deep-purple);
+            font-size: 1.1rem;
+        }
+
+        .provider-info span {
+            color: var(--medium-purple);
+            font-size: 0.9rem;
+        }
+
+        .security-badges {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--very-light-purple);
+            border-radius: 8px;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--dark-gray);
+        }
+
+        .security-badge svg {
+            width: 20px;
+            height: 20px;
+            color: #28a745;
+        }
+
+        @media (max-width: 968px) {
+            .payment-container {
+                padding: 100px 15px 40px;
+            }
+            
+            .payment-wrapper {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .payment-sidebar {
+                position: static;
+                order: -1;
+            }
+            
+            .payment-main {
+                padding: 25px 20px;
+            }
+            
+            .payment-header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .payment-header p {
+                font-size: 0.9rem;
+            }
+            
+            .order-summary h3 {
+                font-size: 1.3rem;
+            }
+            
+            .payment-button {
+                max-width: 100%;
+                padding: 18px 25px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <ul class="nav-menu">
+                    <li><a href="index.html#anasayfa">Ana Sayfa</a></li>
+                    <li><a href="index.html#urunler">Ürünler</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="payment-container">
+        <div class="payment-wrapper">
+            <div class="payment-main">
+                <div class="payment-header">
+                    <h1>Ödeme İşlemi</h1>
+                    <p>Güvenli ödeme için iyzico ve PayTR altyapılarını kullanıyoruz</p>
+                </div>
+
+                <!-- Ödeme Sağlayıcı Seçimi -->
+                <div class="payment-form-section">
+                    <h3>Ödeme Yöntemi Seçin</h3>
+                    
+                    <div class="payment-provider-selection">
+                        <div class="provider-option">
+                            <input type="radio" id="provider-iyzico" name="paymentProvider" value="iyzico" checked>
+                            <label for="provider-iyzico">
+                                <div class="provider-logo">
+                                    <img src="iyzico logo.png" alt="iyzico" style="max-height: 40px;">
+                                </div>
+                                <div class="provider-info">
+                                    <strong>iyzico ile Öde</strong>
+                                    <span>Güvenli ödeme altyapısı</span>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="provider-option">
+                            <input type="radio" id="provider-paytr" name="paymentProvider" value="paytr">
+                            <label for="provider-paytr">
+                                <div class="provider-logo">
+                                    <span style="font-size: 1.5rem; font-weight: bold; color: var(--deep-purple);">PayTR</span>
+                                </div>
+                                <div class="provider-info">
+                                    <strong>PayTR ile Öde</strong>
+                                    <span>Güvenli ödeme altyapısı</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ödeme Formu -->
+                <div class="payment-form-section">
+                    <h3>Ödeme Bilgileri</h3>
+                    
+                    <div id="paymentFormContainer">
+                        <div class="payment-info-box">
+                            <p><strong>Güvenli Ödeme:</strong> Tüm ödeme işlemleri SSL sertifikası ile şifrelenmiş güvenli bağlantı üzerinden gerçekleştirilmektedir. Kart bilgileriniz saklanmamaktadır.</p>
+                            <p style="margin-top: 10px; font-size: 0.9rem;">
+                                <strong>Şirket Bilgileri:</strong> Vergi Dairesi: Alemdar / Vergi No: 0400674863<br>
+                                Adres: Acısu mah. Umuttepe cad. No:8/1 Kartepe Kocaeli
+                            </p>
+                        </div>
+                        
+                        <div class="payment-button-container">
+                            <button id="paymentButton" class="payment-button" onclick="proceedToPayment()">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z" fill="currentColor"/>
+                                </svg>
+                                <span id="paymentButtonText">Kredi Kartı ile Öde</span>
+                            </button>
+                            <p class="payment-note">Ödeme işlemi seçtiğiniz güvenli ödeme altyapısı üzerinden gerçekleştirilecektir.</p>
+                        </div>
+
+                        <!-- Güvenlik Rozetleri -->
+                        <div class="security-badges">
+                            <div class="security-badge">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" fill="currentColor"/>
+                                </svg>
+                                <span>SSL Güvenli</span>
+                            </div>
+                            <div class="security-badge">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
+                                </svg>
+                                <span>KVKK Uyumlu</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="index.html#urunler" class="back-link">← Sepete Dön</a>
+            </div>
+
+            <!-- Sipariş Özeti -->
+            <div class="payment-sidebar">
+                <div class="order-summary">
+                    <h3>Sipariş Özeti</h3>
+                    <div class="order-items" id="orderItems">
+                        <!-- Sipariş öğeleri buraya eklenecek -->
+                    </div>
+                    <div class="order-total">
+                        <div class="order-total-row">
+                            <span class="order-total-label">Toplam:</span>
+                            <span class="order-total-price" id="orderTotal">0 ₺</span>
+                        </div>
+                        <div class="order-kdv-text">KDV dahildir</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-links">
+                        <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
+                        <span>|</span>
+                        <a href="kullanim-kosullari.html">Kullanım Koşulları</a>
+                        <span>|</span>
+                        <a href="iade-iptal-politikasi.html">İade ve İptal</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // URL parametrelerinden sipariş bilgilerini al
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderDataJson = urlParams.get('orderData');
+
+        if (!orderDataJson) {
+            // Sipariş bilgisi yoksa ana sayfaya yönlendir
+            window.location.href = 'index.html';
+        }
+
+        let orderData;
+        try {
+            orderData = JSON.parse(decodeURIComponent(orderDataJson));
+        } catch (e) {
+            console.error('Sipariş verisi parse edilemedi:', e);
+            window.location.href = 'index.html';
+        }
+
+        // Sipariş özetini göster
+        function renderOrderSummary() {
+            const orderItemsContainer = document.getElementById('orderItems');
+            const orderTotalElement = document.getElementById('orderTotal');
+
+            if (!orderData || !orderData.cart || orderData.cart.length === 0) {
+                orderItemsContainer.innerHTML = '<p>Sipariş bulunamadı</p>';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+
+            orderData.cart.forEach(item => {
+                const priceNum = parseFloat(item.price.replace(/[^\d.,]/g, '').replace(',', '.')) || 0;
+                const itemTotal = priceNum * item.quantity;
+                total += itemTotal;
+
+                html += `
+                    <div class="order-item">
+                        <span class="order-item-name">${escapeHtml(item.name)} x ${item.quantity}</span>
+                        <span class="order-item-price">${itemTotal.toFixed(2)} ₺</span>
+                    </div>
+                `;
+            });
+
+            orderItemsContainer.innerHTML = html;
+            orderTotalElement.textContent = total.toFixed(2) + ' ₺';
+        }
+
+        // HTML escape fonksiyonu
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return String(text).replace(/[&<>"']/g, m => map[m]);
+        }
+
+        // Backend API URL'i
+        // Production'da backend URL'ini buraya ekleyin (örn: https://your-backend.railway.app)
+        const BACKEND_API_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:3000'
+            : 'https://your-backend-url.railway.app'; // BACKEND URL'İNİ BURAYA EKLEYİN
+
+        // HTTPS kontrolü
+        function checkHTTPS() {
+            if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
+                console.warn('Ödeme işlemleri için HTTPS gereklidir');
+                return false;
+            }
+            return true;
+        }
+
+        // Ödeme sağlayıcısı değiştiğinde buton metnini güncelle
+        document.addEventListener('DOMContentLoaded', function() {
+            const providerRadios = document.querySelectorAll('input[name="paymentProvider"]');
+            const paymentButtonText = document.getElementById('paymentButtonText');
+            
+            providerRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'paytr') {
+                        paymentButtonText.textContent = 'PayTR ile Öde';
+                    } else {
+                        paymentButtonText.textContent = 'Kredi Kartı ile Öde';
+                    }
+                });
+            });
+        });
+
+        // Ödeme işlemini başlat
+        async function proceedToPayment() {
+            // HTTPS kontrolü
+            if (!checkHTTPS()) {
+                alert('Güvenli ödeme için HTTPS bağlantısı gereklidir. Lütfen HTTPS üzerinden erişin.');
+                return;
+            }
+
+            const paymentButton = document.getElementById('paymentButton');
+            const paymentFormContainer = document.getElementById('paymentFormContainer');
+            const selectedProvider = document.querySelector('input[name="paymentProvider"]:checked').value;
+            
+            // Butonu devre dışı bırak
+            paymentButton.disabled = true;
+            paymentButton.innerHTML = `
+                <div class="loading-spinner" style="width: 20px; height: 20px; border-width: 2px;"></div>
+                <span>Ödeme hazırlanıyor...</span>
+            `;
+
+            try {
+                // Backend'e ödeme isteği gönder
+                const response = await fetch(`${BACKEND_API_URL}/api/payment/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        paymentProvider: selectedProvider,
+                        basketItems: orderData.cart.map(item => ({
+                            id: item.id,
+                            name: item.name,
+                            price: parseFloat(item.price.replace(/[^\d.,]/g, '').replace(',', '.')),
+                            quantity: item.quantity
+                        })),
+                        buyer: {
+                            name: orderData.shipping.firstName,
+                            surname: orderData.shipping.lastName,
+                            email: orderData.shipping.email || 'customer@example.com',
+                            phone: orderData.shipping.phone.replace(/\s/g, '')
+                        },
+                        shippingAddress: orderData.requiresShipping ? {
+                            city: orderData.shipping.city,
+                            district: orderData.shipping.district,
+                            address: orderData.shipping.address,
+                            postalCode: orderData.shipping.postalCode
+                        } : null,
+                        totalPrice: orderData.total,
+                        requiresShipping: orderData.requiresShipping || false
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    if (selectedProvider === 'paytr' && result.iframeUrl) {
+                        // PayTR iframe göster
+                        paymentFormContainer.innerHTML = `
+                            <div class="payment-info-box">
+                                <p>Güvenli ödeme sayfasına yönlendiriliyorsunuz...</p>
+                            </div>
+                            <iframe src="${result.iframeUrl}" class="payment-form-iframe" id="paytrIframe"></iframe>
+                            <p class="payment-note">Ödeme işleminizi tamamladıktan sonra otomatik olarak yönlendirileceksiniz.</p>
+                        `;
+                    } else if (result.checkoutFormContent) {
+                        // İyzico checkout form içeriğini göster
+                        paymentFormContainer.innerHTML = result.checkoutFormContent;
+                    } else {
+                        throw new Error('Ödeme formu içeriği alınamadı');
+                    }
+                } else {
+                    // Hata durumu - butonu tekrar aktif et
+                    paymentButton.disabled = false;
+                    paymentButton.innerHTML = `
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z" fill="currentColor"/>
+                        </svg>
+                        <span id="paymentButtonText">Kredi Kartı ile Öde</span>
+                    `;
+                    
+                    alert('Ödeme formu yüklenemedi: ' + (result.error || 'Bilinmeyen bir hata oluştu'));
+                }
+            } catch (error) {
+                console.error('Ödeme işlemi hatası:', error);
+                
+                // Butonu tekrar aktif et
+                paymentButton.disabled = false;
+                paymentButton.innerHTML = `
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z" fill="currentColor"/>
+                    </svg>
+                    <span id="paymentButtonText">Kredi Kartı ile Öde</span>
+                `;
+                
+                // Backend bağlantısı yoksa bilgilendir ama sayfa çalışmaya devam etsin
+                if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                    alert('Backend sunucusuna bağlanılamadı. Lütfen daha sonra tekrar deneyin veya backend URL\'ini kontrol edin.\n\nNot: Bu sayfa backend bağlantısı olmadan da çalışır, ancak ödeme işlemi için backend gerekli.');
+                } else {
+                    alert('Bir hata oluştu: ' + error.message);
+                }
+            }
+        }
+
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', function() {
+            renderOrderSummary();
+            // Backend bağlantısı olmasa bile sayfa çalışsın, buton hazır olsun
+        });
+    </script>
+</body>
+</html>
+
