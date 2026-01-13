@@ -16,9 +16,34 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+// CORS ayarları - Firebase Hosting ve custom domain'leri dahil et
+const allowedOrigins = [
+    'http://localhost:5500',
+    'http://localhost:3000',
+    'https://annemhikayem-38c31.web.app',
+    'https://annemhikayem-38c31.firebaseapp.com',
+    'https://annemhikayem.com.tr',
+    'https://www.annemhikayem.com.tr',
+    process.env.FRONTEND_URL
+].filter(Boolean); // undefined değerleri temizle
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5500',
-    credentials: true
+    origin: function (origin, callback) {
+        // Origin yoksa (mobile app, Postman vb.) veya izin verilen listede varsa kabul et
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            // Geliştirme için tüm origin'lere izin ver (production'da kaldırılabilir)
+            if (process.env.NODE_ENV !== 'production') {
+                callback(null, true);
+            } else {
+                callback(new Error('CORS policy: Origin not allowed'));
+            }
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
