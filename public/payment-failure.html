@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ödeme Başarısız - Annem Hikayem</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .failure-container {
+            min-height: 100vh;
+            padding: 120px 20px 60px;
+            background: var(--off-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .failure-content {
+            max-width: 600px;
+            background: var(--white);
+            border-radius: 12px;
+            padding: 60px 40px;
+            box-shadow: 0 4px 15px rgba(107, 76, 147, 0.1);
+            text-align: center;
+        }
+
+        .failure-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--white);
+        }
+
+        .failure-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--deep-purple);
+            margin-bottom: 20px;
+        }
+
+        .failure-content p {
+            font-size: 1.1rem;
+            color: var(--dark-gray);
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .error-message {
+            background: #fee;
+            border: 2px solid #fcc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+            color: #c33;
+            text-align: left;
+        }
+
+        .error-message h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #c33;
+        }
+
+        .failure-actions {
+            margin-top: 40px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--deep-purple) 0%, var(--medium-purple) 100%);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(107, 76, 147, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--very-light-purple);
+            color: var(--deep-purple);
+        }
+
+        .btn-secondary:hover {
+            background: var(--light-purple);
+        }
+
+        @media (max-width: 768px) {
+            .failure-content {
+                padding: 40px 20px;
+            }
+
+            .failure-content h1 {
+                font-size: 2rem;
+            }
+
+            .failure-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <ul class="nav-menu">
+                    <li><a href="index.html#anasayfa">Ana Sayfa</a></li>
+                    <li><a href="index.html#urunler">Ürünler</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="failure-container">
+        <div class="failure-content">
+            <div class="failure-icon">✕</div>
+            <h1>Ödeme Başarısız</h1>
+            <p>Ödeme işleminiz tamamlanamadı. Lütfen tekrar deneyin.</p>
+            
+            <div class="error-message" id="errorMessage">
+                <h3>Hata Detayı</h3>
+                <p id="errorText">Bilinmeyen bir hata oluştu.</p>
+            </div>
+
+            <p style="font-size: 0.95rem; color: #666;">
+                Sorun devam ederse, lütfen bizimle iletişime geçin.
+            </p>
+
+            <div class="failure-actions">
+                <a href="index.html" class="btn btn-primary">Ana Sayfaya Dön</a>
+                <button onclick="window.history.back()" class="btn btn-secondary">Tekrar Dene</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-links">
+                        <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
+                        <span>|</span>
+                        <a href="kullanim-kosullari.html">Kullanım Koşulları</a>
+                        <span>|</span>
+                        <a href="iade-iptal-politikasi.html">İade ve İptal</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // URL parametrelerinden hata mesajını al
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error') || 'Bilinmeyen bir hata oluştu';
+
+        // Hata mesajını göster
+        const errorTextElement = document.getElementById('errorText');
+        
+        // Hata kodlarını Türkçe'ye çevir
+        const errorMessages = {
+            'token_missing': 'Ödeme token\'ı bulunamadı.',
+            'query_failed': 'Ödeme sorgulanamadı.',
+            'server_error': 'Sunucu hatası oluştu.',
+            'payment_failed': 'Ödeme işlemi başarısız oldu.',
+            'cancelled': 'Ödeme iptal edildi.'
+        };
+
+        errorTextElement.textContent = errorMessages[error] || error;
+    </script>
+</body>
+</html>
+
+
+
+
+
