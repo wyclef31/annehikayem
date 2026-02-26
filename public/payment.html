@@ -569,8 +569,8 @@
             return String(text).replace(/[&<>"']/g, m => map[m]);
         }
 
-        // Backend API URL'i (Vercel serverless functions)
-        // Aynı domain üzerinden /api/* endpoint'leri kullanılacak, bu nedenle ekstra base URL'e gerek yok
+        // Backend API URL'i - relative URL kullanılıyor (/api/*)
+        // Aynı domain üzerinden /api/* endpoint'leri kullanılır, hardcoded URL yok
 
         // HTTPS kontrolü
         function checkHTTPS() {
@@ -623,7 +623,7 @@
                     };
                 });
 
-                // Backend'e PayTR token isteği gönder (Vercel /api/paytr-token)
+                // Backend'e PayTR token isteği gönder
                 const response = await fetch('/api/paytr-token', {
                     method: 'POST',
                     headers: {

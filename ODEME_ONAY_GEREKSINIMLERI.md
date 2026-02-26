@@ -81,13 +81,9 @@ PAYTR_TEST_MODE=false
 CALLBACK_URL=https://your-domain.com/api/payment/callback
 ```
 
-### 2. Backend URL'ini Güncelleme
+### 2. Backend URL Yapılandırması
 
-`payment.html` dosyasındaki `BACKEND_API_URL` değişkenini güncelleyin:
-
-```javascript
-const BACKEND_API_URL = 'https://your-backend-url.com';
-```
+`payment.html` dosyası otomatik olarak relative URL kullanır (`/api/paytr-token`). Ekstra yapılandırma gerekmez.
 
 ### 3. Webhook URL'lerini PayTR ve iyzico Panellerine Ekleme
 

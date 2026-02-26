@@ -63,7 +63,7 @@ const response = await fetch('/api/paytr-token', { method: 'POST', ... });
 ```
 
 Bu sayede:
-- Railway gibi ayrı bir backend URL'ine ihtiyaç kalmaz
+- Ayrı bir backend URL'ine ihtiyaç kalmaz
 - Frontend ve backend aynı domain altında (`/api/*`) çalışır
 - CORS problemi yaşamazsınız
 
@@ -80,6 +80,6 @@ Bu komut, hem statik dosyaları hem de `api/*` fonksiyonlarını lokal ortamda �
 
 ## Notlar
 
-- Eski Railway Express backend'inde kullanılan PayTR mantığı (hash hesaplama, user_basket formatı vb.) `api/paytr-token.js` ve `api/paytr-callback.js` dosyalarına taşınmıştır.
-- Railway'e özel `app.listen` gibi kodlar serverless yapıda **kullanılmaz**.
+- PayTR mantığı (hash hesaplama, user_basket formatı vb.) `api/paytr-token.js` ve `api/paytr-callback.js` dosyalarında bulunur.
+- Tüm API istekleri relative URL'ler kullanır (`/api/*`), hardcoded backend URL'leri yoktur.
 
