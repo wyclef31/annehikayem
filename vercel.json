@@ -1,3 +1,8 @@
 {
-  "version": 2
+  "version": 2,
+  "routes": [
+    { "src": "/payment.html", "dest": "/api/payment" },
+    { "handle": "filesystem" },
+    { "src": "/api/(.*)", "dest": "/api/$1" }
+  ]
 }
