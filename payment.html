@@ -426,39 +426,7 @@
             <div class="payment-main">
                 <div class="payment-header">
                     <h1>Ödeme İşlemi</h1>
-                    <p>Güvenli ödeme için iyzico ve PayTR altyapılarını kullanıyoruz</p>
-                </div>
-
-                <!-- Ödeme Sağlayıcı Seçimi -->
-                <div class="payment-form-section">
-                    <h3>Ödeme Yöntemi Seçin</h3>
-                    
-                    <div class="payment-provider-selection">
-                        <div class="provider-option">
-                            <input type="radio" id="provider-iyzico" name="paymentProvider" value="iyzico" checked>
-                            <label for="provider-iyzico">
-                                <div class="provider-logo">
-                                    <img src="iyzico logo.png" alt="iyzico" style="max-height: 40px;">
-                                </div>
-                                <div class="provider-info">
-                                    <strong>iyzico ile Öde</strong>
-                                    <span>Güvenli ödeme altyapısı</span>
-                                </div>
-                            </label>
-                        </div>
-                        <div class="provider-option">
-                            <input type="radio" id="provider-paytr" name="paymentProvider" value="paytr">
-                            <label for="provider-paytr">
-                                <div class="provider-logo">
-                                    <span style="font-size: 1.5rem; font-weight: bold; color: var(--deep-purple);">PayTR</span>
-                                </div>
-                                <div class="provider-info">
-                                    <strong>PayTR ile Öde</strong>
-                                    <span>Güvenli ödeme altyapısı</span>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
+                    <p>Ödemeler kredi kartı ile 3D Secure destekli güvenli altyapı üzerinden alınır.</p>
                 </div>
 
                 <!-- Ödeme Formu -->
@@ -481,7 +449,7 @@
                                 </svg>
                                 <span id="paymentButtonText">Kredi Kartı ile Öde</span>
                             </button>
-                            <p class="payment-note">Ödeme işlemi seçtiğiniz güvenli ödeme altyapısı üzerinden gerçekleştirilecektir.</p>
+                            <p class="payment-note">Ödemeler kredi kartı ile 3D Secure destekli güvenli altyapı üzerinden alınır.</p>
                         </div>
 
                         <!-- Güvenlik Rozetleri -->
@@ -601,11 +569,8 @@
             return String(text).replace(/[&<>"']/g, m => map[m]);
         }
 
-        // Backend API URL'i
-        // Production'da backend URL'ini buraya ekleyin (örn: https://your-backend.railway.app)
-        const BACKEND_API_URL = window.location.hostname === 'localhost' 
-            ? 'http://localhost:3000'
-            : 'https://your-backend-url.railway.app'; // BACKEND URL'İNİ BURAYA EKLEYİN
+        // Backend API URL'i (Vercel serverless functions)
+        // Aynı domain üzerinden /api/* endpoint'leri kullanılacak, bu nedenle ekstra base URL'e gerek yok
 
         // HTTPS kontrolü
         function checkHTTPS() {
@@ -616,20 +581,9 @@
             return true;
         }
 
-        // Ödeme sağlayıcısı değiştiğinde buton metnini güncelle
+        // Sayfa yüklendiğinde hazırlık
         document.addEventListener('DOMContentLoaded', function() {
-            const providerRadios = document.querySelectorAll('input[name="paymentProvider"]');
-            const paymentButtonText = document.getElementById('paymentButtonText');
-            
-            providerRadios.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    if (this.value === 'paytr') {
-                        paymentButtonText.textContent = 'PayTR ile Öde';
-                    } else {
-                        paymentButtonText.textContent = 'Kredi Kartı ile Öde';
-                    }
-                });
-            });
+            // Ödeme sağlayıcı seçimi kaldırıldı, varsayılan olarak iyzico kullanılıyor
         });
 
         // Ödeme işlemini başlat
@@ -642,7 +596,6 @@
 
             const paymentButton = document.getElementById('paymentButton');
             const paymentFormContainer = document.getElementById('paymentFormContainer');
-            const selectedProvider = document.querySelector('input[name="paymentProvider"]:checked').value;
             
             // Butonu devre dışı bırak
             paymentButton.disabled = true;
@@ -652,55 +605,53 @@
             `;
 
             try {
-                // Backend'e ödeme isteği gönder
-                const response = await fetch(`${BACKEND_API_URL}/api/payment/create`, {
+                // Sepet toplamını hesapla (kuruş cinsinden)
+                let totalAmount = 0;
+                orderData.cart.forEach(item => {
+                    const priceNum = parseFloat(item.price.replace(/[^\d.,]/g, '').replace(',', '.')) || 0;
+                    totalAmount += priceNum * item.quantity;
+                });
+                const totalAmountKurus = Math.round(totalAmount * 100); // Kuruş cinsinden
+
+                // Sepet öğelerini formatla (PayTR formatına uygun)
+                const basketItems = orderData.cart.map(item => {
+                    const priceNum = parseFloat(item.price.replace(/[^\d.,]/g, '').replace(',', '.')) || 0;
+                    const itemTotalKurus = Math.round(priceNum * item.quantity * 100); // Kuruş cinsinden
+                    return {
+                        name: item.name,
+                        price: itemTotalKurus.toString() // Kuruş cinsinden string (PayTR gereksinimi)
+                    };
+                });
+
+                // Backend'e PayTR token isteği gönder (Vercel /api/paytr-token)
+                const response = await fetch('/api/paytr-token', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        paymentProvider: selectedProvider,
-                        basketItems: orderData.cart.map(item => ({
-                            id: item.id,
-                            name: item.name,
-                            price: parseFloat(item.price.replace(/[^\d.,]/g, '').replace(',', '.')),
-                            quantity: item.quantity
-                        })),
-                        buyer: {
-                            name: orderData.shipping.firstName,
-                            surname: orderData.shipping.lastName,
-                            email: orderData.shipping.email || 'customer@example.com',
-                            phone: orderData.shipping.phone.replace(/\s/g, '')
-                        },
-                        shippingAddress: orderData.requiresShipping ? {
-                            city: orderData.shipping.city,
-                            district: orderData.shipping.district,
-                            address: orderData.shipping.address,
-                            postalCode: orderData.shipping.postalCode
-                        } : null,
-                        totalPrice: orderData.total,
-                        requiresShipping: orderData.requiresShipping || false
+                        email: orderData.shipping.email || 'customer@example.com',
+                        payment_amount: totalAmountKurus.toString(),
+                        user_name: orderData.shipping.firstName || 'Müşteri',
+                        user_address: orderData.requiresShipping && orderData.shipping.address 
+                            ? `${orderData.shipping.address}, ${orderData.shipping.district || ''}, ${orderData.shipping.city || ''}`
+                            : 'Adres bilgisi verilmedi',
+                        user_phone: orderData.shipping.phone.replace(/\s/g, ''),
+                        basket_items: basketItems
                     })
                 });
 
                 const result = await response.json();
 
-                if (result.success) {
-                    if (selectedProvider === 'paytr' && result.iframeUrl) {
-                        // PayTR iframe göster
-                        paymentFormContainer.innerHTML = `
-                            <div class="payment-info-box">
-                                <p>Güvenli ödeme sayfasına yönlendiriliyorsunuz...</p>
-                            </div>
-                            <iframe src="${result.iframeUrl}" class="payment-form-iframe" id="paytrIframe"></iframe>
-                            <p class="payment-note">Ödeme işleminizi tamamladıktan sonra otomatik olarak yönlendirileceksiniz.</p>
-                        `;
-                    } else if (result.checkoutFormContent) {
-                        // İyzico checkout form içeriğini göster
-                        paymentFormContainer.innerHTML = result.checkoutFormContent;
-                    } else {
-                        throw new Error('Ödeme formu içeriği alınamadı');
-                    }
+                if (result.ok && result.token) {
+                    // PayTR iframe'i göster
+                    paymentFormContainer.innerHTML = `
+                        <div class="payment-info-box">
+                            <p>Güvenli ödeme sayfasına yönlendiriliyorsunuz...</p>
+                        </div>
+                        <iframe src="https://www.paytr.com/odeme/guvenli/${result.token}" class="payment-form-iframe" id="paytrIframe"></iframe>
+                        <p class="payment-note">Ödeme işleminizi tamamladıktan sonra otomatik olarak yönlendirileceksiniz.</p>
+                    `;
                 } else {
                     // Hata durumu - butonu tekrar aktif et
                     paymentButton.disabled = false;
@@ -725,12 +676,16 @@
                     <span id="paymentButtonText">Kredi Kartı ile Öde</span>
                 `;
                 
-                // Backend bağlantısı yoksa bilgilendir ama sayfa çalışmaya devam etsin
-                if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-                    alert('Backend sunucusuna bağlanılamadı. Lütfen daha sonra tekrar deneyin veya backend URL\'ini kontrol edin.\n\nNot: Bu sayfa backend bağlantısı olmadan da çalışır, ancak ödeme işlemi için backend gerekli.');
+                // Daha detaylı hata mesajı
+                let errorMessage = 'Bir hata oluştu. Lütfen tekrar deneyin.';
+                
+                if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError') || error.name === 'TypeError') {
+                    errorMessage = 'Backend sunucusuna bağlanılamadı. Lütfen daha sonra tekrar deneyin veya site yöneticisi ile iletişime geçin.';
                 } else {
-                    alert('Bir hata oluştu: ' + error.message);
+                    errorMessage = 'Hata: ' + (error.message || 'Bilinmeyen bir hata oluştu');
                 }
+                
+                alert(errorMessage);
             }
         }
 

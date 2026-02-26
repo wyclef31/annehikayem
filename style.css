@@ -1240,6 +1240,115 @@ header {
     color: var(--dark-gray);
 }
 
+/* Müşteri Geri Dönüşleri Bölümü */
+.testimonials-section {
+    padding: 100px 20px;
+    background: var(--off-white);
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.testimonial-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 8px 25px rgba(107, 76, 147, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(107, 76, 147, 0.15);
+}
+
+.testimonial-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--very-light-purple);
+}
+
+.testimonial-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--deep-purple) 0%, var(--medium-purple) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 1.8rem;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    flex-shrink: 0;
+}
+
+.testimonial-author h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--deep-purple);
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.testimonial-type {
+    color: var(--medium-purple);
+    font-size: 0.95rem;
+    font-style: italic;
+}
+
+.testimonial-content {
+    line-height: 1.9;
+    color: var(--dark-gray);
+}
+
+.testimonial-content p {
+    margin-bottom: 20px;
+    font-size: 1.05rem;
+}
+
+.testimonial-content p:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .testimonials-section {
+        padding: 80px 15px;
+    }
+
+    .testimonial-card {
+        padding: 25px 20px;
+    }
+
+    .testimonial-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .testimonial-avatar {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .testimonial-author h3 {
+        font-size: 1.3rem;
+    }
+
+    .testimonial-content p {
+        font-size: 1rem;
+    }
+}
+
 /* Contact Section */
 .contact-section-page {
     padding: 80px 0;
