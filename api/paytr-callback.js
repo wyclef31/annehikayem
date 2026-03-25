@@ -1,6 +1,12 @@
 import crypto from 'crypto';
 
 export default function handler(req, res) {
+  const sendOk = () => {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.end('OK');
+  };
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
     return res
@@ -16,8 +22,7 @@ export default function handler(req, res) {
     if (!merchant_id || !merchant_key || !merchant_salt) {
       // Env eksik olsa bile PayTR'e OK dönelim ki tekrar tekrar denemesin
       console.error('PayTR callback: env eksik');
-      res.send('OK');
-      return;
+      return sendOk();
     }
 
     const {
@@ -67,11 +72,11 @@ export default function handler(req, res) {
 
     // TODO: Burada sipariş durumunu güncelle / veritabanına kaydet
 
-    res.send('OK');
+    return sendOk();
   } catch (e) {
     console.error('PayTR callback handler error:', e);
     // Hata olsa bile PayTR'e OK dönmeliyiz
-    res.send('OK');
+    return sendOk();
   }
 }
 
