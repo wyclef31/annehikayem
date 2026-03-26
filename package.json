@@ -1,24 +1,16 @@
 {
   "name": "annemhikayem-backend",
   "version": "1.0.0",
-  "description": "Annem Hikayem Backend - PayTR ve İyzico Ödeme Entegrasyonu",
-  "main": "server.js",
+  "type": "module",
+  "description": "Annem Hikayem - PayTR Ödeme Entegrasyonu",
   "scripts": {},
   "keywords": [
     "paytr",
-    "iyzico",
-    "payment",
-    "express"
+    "payment"
   ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
     "axios": "^1.6.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
   }
 }
